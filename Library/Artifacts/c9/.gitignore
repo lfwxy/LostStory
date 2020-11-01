@@ -1,0 +1,17 @@
+/Library/
+/Temp/
+/obj/
+/.idea/
+/.vs/
+/Assets/StreamingAssets/bundle/
+/Assets/StreamingAssets/bundle.meta
+/Build/
+/Assembly-CSharp-Editor.csproj
+/Assembly-CSharp-Editor.csproj.meta
+*.csproj
+/Assembly-CSharp.csproj
+*.iml
+*.iml.meta
+/Assets/LuaDeepProfilerSetting.asset
+*.sln
+
