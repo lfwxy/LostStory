@@ -1,5 +1,10 @@
-0,back.jpg
-1,left,角色1名称,说了第一句话,left.jpg
-1,right,角色2名称,说了第二句话,right.jpg
-1,left,角色1名称,说了第三句话,left.jpg
-1,right,角色2名称,说了第四句话,right.jpg
+0,street
+1,left,温莉,说了第一句话,girl
+1,right,爱德,说了第二句话,boy
+1,left,温莉,说了第三句话,girl
+1,right,爱德,说了第四句话,boy
+0,home
+1,left,温莉,说了第一句话,girl
+1,right,爱德,说了第二句话,boy
+1,left,温莉,说了第三句话,girl
+1,right,爱德,说了第四句话,boy

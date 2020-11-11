@@ -17,11 +17,6 @@ public class LoadScripts : MonoBehaviour
         index = 0;
     }
 
-    void Start()
-    {
-        loadScripts("123.txt");
-    }
-
     public void loadScripts(string txtFileName)
     {
         index = 0;
