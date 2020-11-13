@@ -13,7 +13,7 @@ public class StoryState : ISceneState
 	// 開始
 	public override void StateBegin()
 	{
-		//PBaseDefenseGame.Instance.Initinal();
+		LostStoryGame.Instance.Initinal();
 	}
 
 	// 結束
@@ -26,7 +26,7 @@ public class StoryState : ISceneState
 	public override void StateUpdate()
 	{	
 		// 遊戲邏輯
-		//PBaseDefenseGame.Instance.Update();
+		LostStoryGame.Instance.Update();
 		// Render由Unity負責
 
 		// 遊戲是否結束

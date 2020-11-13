@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Scences>
+    <scene id="0">
+        <background>street</background>
+        <content>
+			<role>
+				<people>boy</people>
+				<talk>思考第一句话\r\n思考第二句话</talk>
+			</role>
+			<role>
+				<people>girl</people>
+				<name>温莉</name>
+				<talk>说了第一句话</talk>
+			</role>
+		</content>
+		<condition>2</condition>
+    </scene>
+	
+    <scene id="1">
+        <background>home</background>
+        <content>
+			<role>
+				<talk>思考第三句话</talk>
+			</role>
+		</content>
+    </scene>
+</Scences>
