@@ -4,16 +4,69 @@
         <background>street</background>
         <content>
 			<role>
-				<people>boy</people>
+				<people>
+					<human id = "1">
+						<pos>0</pos>
+						<scale>1</scale>
+						<pic>boy</pic>
+						<action>run</action>
+					</human>
+					<human id = "2">
+						<pos>3</pos>
+						<scale>1</scale>
+						<pic>girl</pic>
+					</human>
+				</people>
 				<talk>思考第一句话\r\n思考第二句话</talk>
 			</role>
 			<role>
-				<people>girl</people>
+				<people>
+					<human id = "5">
+						<pos>3</pos>
+						<scale>1</scale>
+						<pic>girl</pic>
+					</human>
+				</people>
 				<name>温莉</name>
 				<talk>说了第一句话</talk>
 			</role>
 		</content>
-		<condition>2</condition>
+		<select>
+			<selection>
+				<text>选项1</text>
+				<success>0</success>
+				<fail>1</fail>
+				<if>
+					<condition>
+						<field>if1</field>
+						<value>0</value>
+					</condition>
+					<condition>
+						<field>if2</field>
+						<value>1</value>
+					</condition>
+				</if>
+				<result>
+					<condition>
+						<field>if1</field>
+						<value>1</value>
+					</condition>
+					<condition>
+						<field>if2</field>
+						<value>-1</value>
+					</condition>
+				</result>
+			</selection>
+			<selection>
+				<text>选项2</text>
+				<success>1</success>
+				<fail>0</fail>
+				<if>
+				</if>
+				<result>
+				</result>
+			</selection>
+		</select>
     </scene>
 	
     <scene id="1">
@@ -23,5 +76,25 @@
 				<talk>思考第三句话</talk>
 			</role>
 		</content>
+		<select>
+			<selection>
+				<text>选项3</text>
+				<success>0</success>
+				<fail>1</fail>
+				<if>
+				</if>
+				<result>
+				</result>
+			</selection>
+			<selection>
+				<text>选项4</text>
+				<success>0</success>
+				<fail>1</fail>
+				<if>
+				</if>
+				<result>
+				</result>
+			</selection>
+		</select>
     </scene>
 </Scences>

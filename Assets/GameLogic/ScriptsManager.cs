@@ -7,6 +7,19 @@ using System.Collections.Generic;
 
 public class ScriptsManager : IGameManager
 {
+
+    //存放当前场景index,角色index,谈话顺序index
+    int sceneIndex;
+    int roleIndex;
+    int talkIndex;
+
+    string currentTalk;//当前对话内容
+
+    bool scriptBegin = false;//是否正在自动对话
+    bool selectBegin = false;//是否处于选择模式
+
+    public bool TalkPlay { get; set; } = false;
+
     public ScriptsManager(LostStoryGame lostStoryGame) : base(lostStoryGame)
     {
         Initialize();
@@ -16,16 +29,18 @@ public class ScriptsManager : IGameManager
     {
         base.Initialize();
         loadScripts();
-        LoadScence(0, 0, 0);
+
     }
 
-    int index;
 
-    //存放当前场景index,角色index,谈话顺序index
-    int sceneIndex;
-    int roleIndex;
-    int talkIndex;
-
+    public override void Update()
+    {
+        if (scriptBegin == false)
+        {
+            LoadScence(0, 0, 0);
+            scriptBegin = true;
+        }
+    }
 
     List<string> txt;
     public Dictionary<int, XmlNode> dicScenes;
@@ -61,10 +76,14 @@ public class ScriptsManager : IGameManager
         roleIndex = roIndex;
         talkIndex = taIndex;
 
+        selectBegin = false;
         XmlNode scene = dicScenes[scIndex];
         lostStoryGame.ChangeBackground(scene.SelectSingleNode("background").InnerText);
-
+        //代表本次场景谈话人物以及内容
         XmlNode content = scene.SelectSingleNode("content");
+        //代表本次场景结束后的选项内容和进入下一个场景的条件
+        XmlNode select = scene.SelectSingleNode("select");
+        LoadSelect(select);
 
         roles.Clear();
         foreach (XmlNode role in content.ChildNodes)
@@ -75,24 +94,39 @@ public class ScriptsManager : IGameManager
         LoadRole();
     }
 
+    private void LoadSelect(XmlNode select)
+    {
+        lostStoryGame.ShowSelect(false);
+        foreach (XmlNode selection in select.ChildNodes)
+        {
+            //在UI增加按钮和添加点击事件
+            lostStoryGame.DrawSelection(selection);
+        }
+    }
+
+    public void ChangeScene(XmlNode selection)
+    {
+        int sucIndex = int.Parse(selection.SelectSingleNode("success").InnerText);
+        LoadScence(sucIndex,0,0);
+    }
+
     public void LoadRole()
     {
-        
-        if (roles[roleIndex].SelectSingleNode("people") != null)
-        {
-            string people = roles[roleIndex].SelectSingleNode("people").InnerText;
-            //显示人物
-        }
+        XmlNode people = roles[roleIndex].SelectSingleNode("people");
+
+        //显示人物
+        lostStoryGame.DrawPeople(people);
+
 
         string name;
         if (roles[roleIndex].SelectSingleNode("name") != null)
         {
-             name = roles[roleIndex].SelectSingleNode("name").InnerText;
+            name = roles[roleIndex].SelectSingleNode("name").InnerText;
             //显示名字
         }
         else
         {
-             name = "";
+            name = "";
         }
         lostStoryGame.ChangRoleName(name);
 
@@ -108,27 +142,42 @@ public class ScriptsManager : IGameManager
 
     public void LoadTalk()
     {
-        if (txt.Count <= talkIndex)
+        if (selectBegin == true) return;
+
+        if (TalkPlay == false)
         {
-            roleIndex += 1;
-            talkIndex = 0;
-            if (roles.Count <= roleIndex)
+            if (txt.Count <= talkIndex)
             {
-                roleIndex = 0;
-                Debug.Log("进入选择状态，跳关。");
-                LoadScence(1, 0, 0);
+                roleIndex += 1;
+                talkIndex = 0;
+                if (roles.Count <= roleIndex)
+                {
+                    roleIndex = 0;
+                    Debug.Log("进入选择状态，跳关。");
+                    selectBegin = true;
+                    lostStoryGame.ShowSelect(true);
+                }
+                else
+                {
+                    LoadRole();
+                }
             }
             else
             {
-                LoadRole();
+                TalkPlay = true;
+                currentTalk = txt[talkIndex];
+                lostStoryGame.PlayText(currentTalk);
+                Debug.Log(currentTalk);
+
+                talkIndex += 1;
             }
         }
         else
         {
-            lostStoryGame.PlayText(txt[talkIndex]);
-            Debug.Log(txt[talkIndex]);
-            talkIndex += 1;
+            TalkPlay = false;
+            lostStoryGame.ShowText(currentTalk);
         }
+
     }
 
 }

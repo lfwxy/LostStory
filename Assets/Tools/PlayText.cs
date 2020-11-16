@@ -27,8 +27,18 @@ public class PlayText : MonoBehaviour
     {
         foreach (char letter in txt.ToCharArray())
         {
-            talk.text += letter;
-            yield return new WaitForSeconds(letterPause);
+            if (LostStoryGame.Instance.GetTalkPlay())
+            {
+                talk.text += letter;
+                yield return new WaitForSeconds(letterPause);
+            }
+            else 
+            {
+                StopAllCoroutines();
+            }
         }
+
+        LostStoryGame.Instance.SetTalkPlay(false);
+        StopAllCoroutines();
     }
 }
