@@ -95,19 +95,32 @@ public class UIManager : IGameManager
 
             Image role = People.transform.GetChild(pos).GetComponent<Image>();
             SetImage(role, "Role", pic);
-            role.SetNativeSize();
+            //role.SetNativeSize();
             role.gameObject.SetActive(true);
         }
 
     }
 
-    public void DrawSelection(XmlNode selection)
+    public void DrawSelection(int index, XmlNode selection)
     {
-        GameObject goPrefab = Resources.Load("Prefabs/select") as GameObject;
-        GameObject go = UnityEngine.Object.Instantiate(goPrefab);
-        Button btn = go.GetComponent<Button>();
-        go.transform.SetParent(Selection.transform);
-        go.transform.localScale = Vector3.one;
+        GameObject go;
+        Button btn;
+        if (Selection.transform.childCount <= index)
+        {
+            GameObject goPrefab = Resources.Load("Prefabs/select") as GameObject;
+            go = UnityEngine.Object.Instantiate(goPrefab);
+            btn = go.GetComponent<Button>();
+            go.transform.SetParent(Selection.transform);
+            go.transform.localScale = Vector3.one;
+
+        }
+        else
+        {
+            go = Selection.transform.GetChild(index).gameObject;
+            btn = go.GetComponent<Button>();
+            btn.onClick.RemoveAllListeners();
+        }
+        go.SetActive(true);
         go.transform.GetChild(0).GetComponent<Text>().text = selection.SelectSingleNode("text").InnerText;
         btn.onClick.AddListener(delegate { ChangeScene(selection); });
 
@@ -124,7 +137,7 @@ public class UIManager : IGameManager
         {
             foreach (Transform tr in Selection.transform)
             {
-                UnityEngine.Object.Destroy(tr.gameObject);
+                tr.gameObject.SetActive(false);
             }
         }
         Selection.SetActive(show);

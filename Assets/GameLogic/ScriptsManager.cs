@@ -42,10 +42,11 @@ public class ScriptsManager : IGameManager
         }
     }
 
-    List<string> txt;
+    List<string> txt = new List<string>();
     public Dictionary<int, XmlNode> dicScenes;
 
     private List<XmlNode> roles;
+    private Dictionary<string, HashSet<int>> roleNameIndex = new Dictionary<string, HashSet<int>>();
 
 
     public void loadScripts()
@@ -78,7 +79,11 @@ public class ScriptsManager : IGameManager
 
         selectBegin = false;
         XmlNode scene = dicScenes[scIndex];
-        lostStoryGame.ChangeBackground(scene.SelectSingleNode("background").InnerText);
+        XmlNode background = scene.SelectSingleNode("background");
+        if (background != null)
+        {
+            lostStoryGame.ChangeBackground(background.InnerText);
+        }
         //代表本次场景谈话人物以及内容
         XmlNode content = scene.SelectSingleNode("content");
         //代表本次场景结束后的选项内容和进入下一个场景的条件
@@ -97,21 +102,96 @@ public class ScriptsManager : IGameManager
     private void LoadSelect(XmlNode select)
     {
         lostStoryGame.ShowSelect(false);
-        foreach (XmlNode selection in select.ChildNodes)
+
+        //在UI增加按钮和添加点击事件
+        for (int i = 0; i < select.ChildNodes.Count; i++)
         {
-            //在UI增加按钮和添加点击事件
-            lostStoryGame.DrawSelection(selection);
+            lostStoryGame.DrawSelection(i, select.ChildNodes[i]);
         }
     }
 
     public void ChangeScene(XmlNode selection)
     {
         int sucIndex = int.Parse(selection.SelectSingleNode("success").InnerText);
-        LoadScence(sucIndex,0,0);
+        int failIndex = int.Parse(selection.SelectSingleNode("fail").InnerText);
+        XmlNode conditions = selection.SelectSingleNode("conditions");
+        XmlNode results = selection.SelectSingleNode("results");
+
+        bool suc = true;
+
+        if (conditions != null)
+        {
+            foreach (XmlNode condition in conditions.ChildNodes)
+            {
+                suc = suc && LoadCondition(condition);
+            }
+        }
+
+        if (results != null)
+        {
+            foreach (XmlNode result in results.ChildNodes)
+            {
+                LoadResult(result);
+            }
+        }
+
+        if (suc == true)
+        {
+            LoadScence(sucIndex, 0, 0);
+            Debug.Log("判定成功");
+        }
+
+        else
+        {
+            LoadScence(failIndex, 0, 0);
+            Debug.Log("判定失败");
+        }
+    }
+
+    private bool LoadCondition(XmlNode result)
+    {
+        string field = result.SelectSingleNode("field").InnerText;
+        string opt = result.SelectSingleNode("opt").InnerText;
+        int value = int.Parse(result.SelectSingleNode("value").InnerText);
+
+        if (opt == "more")
+        {
+            return lostStoryGame.GetFlagValue(field) > value;
+        }
+        else if (opt == "less")
+        {
+            return lostStoryGame.GetFlagValue(field) < value;
+        }
+        return true;
+    }
+
+    private void LoadResult(XmlNode result)
+    {
+        string field = result.SelectSingleNode("field").InnerText;
+        string opt = result.SelectSingleNode("opt").InnerText;
+        int value = int.Parse(result.SelectSingleNode("value").InnerText);
+
+        if (opt == "add")
+        {
+            value += lostStoryGame.GetFlagValue(field);
+        }
+        else if (opt == "set")
+        {
+
+        }
+
+        lostStoryGame.SetFlagValue(field, value);
     }
 
     public void LoadRole()
     {
+
+        XmlNode background = roles[roleIndex].SelectSingleNode("background");
+        if(background != null)
+        {
+            lostStoryGame.ChangeBackground(background.InnerText);
+        }
+
         XmlNode people = roles[roleIndex].SelectSingleNode("people");
 
         //显示人物
@@ -130,12 +210,33 @@ public class ScriptsManager : IGameManager
         }
         lostStoryGame.ChangRoleName(name);
 
-        if (roles[roleIndex].SelectSingleNode("talk") != null)
+        XmlNode talks = roles[roleIndex].SelectSingleNode("talks");
+        txt.Clear();
+        roleNameIndex.Clear();
+        foreach(XmlNode talk in talks.ChildNodes)
         {
-            //在此解析对话内容并存起来
-            string talk = roles[roleIndex].SelectSingleNode("talk").InnerText;
-            txt = new List<string>(talk.Split(new string[] { "\\r\\n" }, StringSplitOptions.None));
+            string roleName = talk.SelectSingleNode("name").InnerText;
+            string text = talk.SelectSingleNode("text").InnerText;
+            List<string> context = new List<string>(text.Split(new string[] { "\\r\\n" }, StringSplitOptions.None));
+
+            foreach (string str in context)
+            {
+                txt.Add(str);
+                if (roleNameIndex.ContainsKey(roleName) == false)
+                {
+                    roleNameIndex.Add(roleName, new HashSet<int>());
+                }
+                roleNameIndex[roleName].Add(txt.Count-1);
+            }
+
         }
+
+        //if (roles[roleIndex].SelectSingleNode("talk") != null)
+        //{
+        //    //在此解析对话内容并存起来
+        //    string talk = roles[roleIndex].SelectSingleNode("talk").InnerText;
+        //    txt = new List<string>(talk.Split(new string[] { "\\r\\n" }, StringSplitOptions.None));
+        //}
         LoadTalk();
 
     }
@@ -169,6 +270,15 @@ public class ScriptsManager : IGameManager
                 lostStoryGame.PlayText(currentTalk);
                 Debug.Log(currentTalk);
 
+                foreach (var set in roleNameIndex)
+                {
+                    if (set.Value.Contains(talkIndex))
+                    {
+                        lostStoryGame.ChangRoleName(set.Key);
+                        break;
+                    }
+                }
+                
                 talkIndex += 1;
             }
         }

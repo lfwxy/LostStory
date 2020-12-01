@@ -9,7 +9,7 @@ public class LostStoryGame
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new LostStoryGame();
             }
@@ -20,6 +20,7 @@ public class LostStoryGame
     private GameManager gameManager = null;
     private ScriptsManager scriptsManager = null;
     private UIManager uIManager = null;
+    private FlagManager flagManager = null;
 
     private LostStoryGame() { }
 
@@ -28,7 +29,7 @@ public class LostStoryGame
         gameManager = new GameManager(this);
         uIManager = new UIManager(this);
         scriptsManager = new ScriptsManager(this);
-        
+        flagManager = new FlagManager(this);
     }
 
     public void Update()
@@ -36,11 +37,12 @@ public class LostStoryGame
         gameManager.Update();
         scriptsManager.Update();
         uIManager.Update();
+        flagManager.Update();
     }
 
     public void LoadScence(int scIndex, int roIndex = 0, int taIndex = 0)
     {
-        scriptsManager.LoadScence( scIndex,  roIndex , taIndex);
+        scriptsManager.LoadScence(scIndex, roIndex, taIndex);
     }
 
     public void LoadTalk()
@@ -78,14 +80,14 @@ public class LostStoryGame
         scriptsManager.TalkPlay = playing;
     }
 
-    public void DrawPeople(XmlNode people) 
+    public void DrawPeople(XmlNode people)
     {
         uIManager.DrawPeople(people);
     }
 
-    public void DrawSelection(XmlNode selection)
+    public void DrawSelection(int index, XmlNode selection)
     {
-        uIManager.DrawSelection(selection);
+        uIManager.DrawSelection(index, selection);
     }
 
     public void ShowSelect(bool show)
@@ -96,6 +98,16 @@ public class LostStoryGame
     public void ChangeScene(XmlNode selection)
     {
         scriptsManager.ChangeScene(selection);
+    }
+
+    public int GetFlagValue(string flag)
+    {
+        return flagManager.GetFlagValue(flag);
+    }
+
+    public void SetFlagValue(string flag, int value)
+    {
+        flagManager.SetFlagValue(flag, value);
     }
 }
 

@@ -31,14 +31,20 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: ba95383c2b2d21944859f59478ec6db8, type: 3}
-    totalSpriteSurfaceArea: 1036800
+    totalSpriteSurfaceArea: 4608000
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 5ba40bf667f94ab4984fa6a1681e83d8, type: 3}
-  - {fileID: 21300000, guid: 56d39937a013f2a46a898474935ccf46, type: 3}
+  - {fileID: 21300000, guid: f08ca9f2b6ce54f45a3761641aab9889, type: 3}
+  - {fileID: 21300000, guid: 658a96033d45916498c73ce5691c3a3a, type: 3}
+  - {fileID: 21300000, guid: a1fb7ef9188db1a43a593987602817fc, type: 3}
+  - {fileID: 21300000, guid: 0e5bfa2c0e1bc954ab3cd37a2d52e38e, type: 3}
+  - {fileID: 21300000, guid: 2a59d68d408f4bf489c815e5d521539d, type: 3}
   m_PackedSpriteNamesToIndex:
-  - street
-  - home
+  - caocao_field
+  - liubei_home
+  - caocao_home
+  - caocao_road
+  - liubei_field
   m_Tag: Background
   m_IsVariant: 0

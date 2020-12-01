@@ -31,14 +31,36 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 945004a30c0356e439c7848c992a904d, type: 3}
-    totalSpriteSurfaceArea: 359640
+    totalSpriteSurfaceArea: 34629592
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: f5608311796483140a615f825d8b3416, type: 3}
+  - {fileID: 21300000, guid: bcb1055179d45ba42a0228f600bb49a4, type: 3}
+  - {fileID: 21300000, guid: b734f4751a4ec8b408b7898fe0ad2921, type: 3}
+  - {fileID: 21300000, guid: b7c92346cf502eb4896a8c592f2b5d93, type: 3}
+  - {fileID: 21300000, guid: 101027a61a58f174397b9e64ddec6831, type: 3}
+  - {fileID: 21300000, guid: 438866d6969c2f14790d9b13bac99d2b, type: 3}
   - {fileID: 21300000, guid: eb18ff07b8db84d4db53629c81ecdef4, type: 3}
+  - {fileID: 21300000, guid: 273b5ec7bb6c51d44a0ce4bdaee44146, type: 3}
+  - {fileID: 21300000, guid: 4851648a6dced8545bb4d580b4c9566e, type: 3}
+  - {fileID: 21300000, guid: e50e268d8401f474bb0ae5a9d0bd5cfb, type: 3}
+  - {fileID: 21300000, guid: 2b123f0eecf27e34bb4962c17790c299, type: 3}
+  - {fileID: 21300000, guid: 48fd240fcfdb17040aa19175ce8453d2, type: 3}
   - {fileID: 21300000, guid: dbde484f6be8f2a49bab128334fb3353, type: 3}
   m_PackedSpriteNamesToIndex:
+  - caocao_normal
+  - liubei_normal
+  - liubei_shock
+  - caocao_serious
+  - server_smile
+  - caocao_think
   - boy
+  - caocao_look
+  - liubei_serious
+  - caocao_smile
+  - caocao_confident
+  - liubei_think
   - girl
   m_Tag: Role
   m_IsVariant: 0
