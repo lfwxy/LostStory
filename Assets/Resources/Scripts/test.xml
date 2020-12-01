@@ -14,7 +14,7 @@
 					<human id = "2">
 						<pos>3</pos>
 						<scale>1</scale>
-						<pic>girl</pic>
+						<pic>caocao_serious</pic>
 					</human>
 				</people>
 				
@@ -35,7 +35,7 @@
 					<human id = "5">
 						<pos>3</pos>
 						<scale>1</scale>
-						<pic>girl</pic>
+						<pic>caocao_serious</pic>
 					</human>
 				</people>
 				<name>温莉</name>
@@ -94,7 +94,7 @@
     </scene>
 	
     <scene id="1">
-        <background>home</background>
+        <background>caocao_road</background>
         <content>
 			<role>
 				<talks>
